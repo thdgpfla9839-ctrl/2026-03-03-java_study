@@ -25,7 +25,7 @@
  *  System.out.printf()
  *  System.out.println()     
  *  
- *       
+ *        
  *       
  *  정수
  *  byte
