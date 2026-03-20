@@ -106,7 +106,7 @@ public class GenieMusicSystem {
 			   System.out.println("============================");
 		   }
 	   }catch(Exception ex){}
-   }
+   } // 데이터 수집부분
    
    // 기능 메소드  
    // 0.메뉴
