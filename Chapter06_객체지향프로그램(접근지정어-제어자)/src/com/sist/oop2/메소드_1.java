@@ -30,12 +30,13 @@ class Temp
 	{
 		DecimalFormat d= new DecimalFormat("###,###,###");
 		return d.format(num);
-	}
+	}// 돈 계산
+	
 	public String dataChange(Date data)
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh :mm:ss");
 		return sdf.format(data);
-	}
+	}// 날짜 계산
 }
 public class 메소드_1 {
 
