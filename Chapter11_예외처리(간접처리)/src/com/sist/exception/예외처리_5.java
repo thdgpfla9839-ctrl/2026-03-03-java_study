@@ -38,19 +38,37 @@ package com.sist.exception;
  *                       
  *    
  */
+//public class 예외처리_5 {
+//     public static void div(int a, int b) throws  Exception// ArithmeticException 
+//     // 예상되는 에러 나열
+//     {
+//    	 int c=a/b;
+//    	 System.out.println(c);
+//     }
+//     // 나열시 main 뒤에 throws Exception 이렇게만 적어도 위에 나열한 거 전부 받음
+//	public static void main(String[] args) {
+//		// TODO Auto-generated method stub
+//		 div(10,3);
+//		// 직접처리 트라이캐치절
+//		// 다음에 호출 시 처리 throws
+//	}
+//
+//}
+
+
+
 public class 예외처리_5 {
-     public static void div(int a, int b) throws  Exception// ArithmeticException 
-     // 예상되는 에러 나열
-     {
-    	 int c=a/b;
-    	 System.out.println(c);
-     }
-     // 나열시 main 뒤에 throws Exception 이렇게만 적어도 위에 나열한 거 전부 받음
-	public static void main(String[] args) {
+    public static void div(int a,int b) throws Exception,
+    ClassNotFoundException,InterruptedException
+    {
+    	int c=a/b;
+    	System.out.println(c);
+    }
+	public static void main(String[] args) throws Exception{
 		// TODO Auto-generated method stub
-        div(10/3);
-		// 직접처리 트라이캐치절
-		// 다음에 호출 시 처리 throws
+        div(10,3);
+		// 직접 처리 => try~catch
+		// 다음에 호풀시 처리 => throws 
 	}
 
 }
