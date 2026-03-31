@@ -1,4 +1,5 @@
 package com.sist.lang;
+import java.lang.reflect.Method;
 import java.util.*;
 class Controller
 {
@@ -46,7 +47,7 @@ public class Wrapper_2 {
         
 		// 다른 예제
           Scanner scan = new Scanner(System.in);
-          Controller c = new Controller();
+//          Controller c = new Controller();
 //          System.out.println("aaa(1), bbb(2), ccc(3), ddd(4), eee(5): ");
 //          int no=scan.nextInt();
 //          if(no==1)
@@ -60,15 +61,27 @@ public class Wrapper_2 {
 //          if(no==5)
 //        	  c.eee();
 //          
-
           try
           {
-        	  Class clsName = Class.forName("com.sist.lang.Controller");
-        	  Object obj = clsName.getDeclaredConstructors().newInstance 
-        			  
-              Method[] methods=clsName.getDeclaredMethods();			  
-          }
-          catch (Exception ex) {}
+          	Class clsName=Class.forName("com.sist.lang.Controller");
+          	Object obj=clsName.getDeclaredConstructor().newInstance();
+          	
+          	Method[] methods=clsName.getDeclaredMethods();
+          	
+          	System.out.println("1~5입력:");
+          	String no=scan.next();
+          	
+          	for(Method m:methods)
+          	{
+          		RequestMapping rm=m.getAnnotation(RequestMapping.class);
+          		if(rm.value().equals(no))
+          		{
+          			m.invoke(obj, null);
+          		}
+          	}
+          	
+          	
+          }catch(Exception ex) {}
 	}
 
 }
