@@ -41,7 +41,9 @@ public class CustomerDataCollection {
 			   customers[j]=vo;
 			   j++;
 		   }
-	   }catch(Exception ex){}
+	   }catch(Exception ex){
+		   ex.printStackTrace();//에러가 뭔지 메시지로 확인
+	   }
    }
    
    // 기능 
