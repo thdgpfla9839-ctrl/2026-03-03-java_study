@@ -29,6 +29,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RUNTIME)
 @Target(METHOD)
-public @interface RequstMapping_스프링에서메소드를찾는구분자 {
+public @interface RequstMapping {
    public String value(); // 구분자(=이름을 입력해야한다)
 }
