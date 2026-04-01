@@ -45,7 +45,7 @@ public class 정규표현식_1 {
     */
    
    String res="맛있는,맛있고,맛있게,맛있소,맛있다,맛없다";
-   Pattern p=Pattern.compile("맛있."); // 맛있으로 시작하는 모든 단어를 가져온다, 변경되는게 한글자면 . , 두글자 이상이면 +
+   Pattern p=Pattern.compile("맛있."); // 맛있으로 시작하는 모든 단어를 가져온다, 변경되는게 한글자면 . , 한글자 이상이면 +
    Matcher m=p.matcher(res);
    while(m.find())
    {
