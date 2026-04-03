@@ -93,7 +93,10 @@ package com.sist.collection;
  *             =StringTokenizer  
  *                 
  *--------------------------------------------------------------------------------
- *       
+ * 컬랙션에서는 List : add / get / size / isEmpty / clear
+ *           Set : add / remove / isEMpty
+ *           Map : put / get
+ *           위주로만 공부하면 된다
  *         
  *   
  *   
