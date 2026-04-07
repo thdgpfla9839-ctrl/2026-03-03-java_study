@@ -9,7 +9,7 @@
  *    4년마다      100년맞다 제외        400년 마다
  */
 import java.util.Scanner; // 키보드 입력을 받는 경우 사용
-public class 선택조건문_2 {
+public class 선택조건문_2 { 
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

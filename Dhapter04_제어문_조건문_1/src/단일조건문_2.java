@@ -1,5 +1,5 @@
 /*
- * 메뉴 처리
+ * 메뉴 처리 
  */
 import java.util.Scanner;
 public class 단일조건문_2 {

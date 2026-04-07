@@ -5,7 +5,7 @@ public class 선택조건문_1 {
 		// TODO Auto-generated method stub
      String id="admin";
      String pwd="1234";
-     
+      
      // 아이디와 비번이 같은 경우는 if수행
      // hover 일때 if~else문장씀
      
