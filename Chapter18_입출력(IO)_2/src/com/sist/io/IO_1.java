@@ -1,4 +1,5 @@
 package com.sist.io;
+
 /*
  * 스트림: 데이터가 이동하는 통로
  * 버퍼 : 임시기억장소
@@ -25,8 +26,8 @@ package com.sist.io;
  *            Wrapper : int -> Integer : parseInt()
  *                      double -> Double : parseDouble()
  *                      booelan -> Boolean : parseBoolean()
- *          StringBuffer/StringBuiler
- *          비동기             동기 -> 문자열 결합 : append()
+ *           StringBuffer/StringBuiler
+ *            비동기             동기 -> 문자열 결합 : append()
  *          
  *  -----------------------------------------------------------
  *  
@@ -37,26 +38,28 @@ package com.sist.io;
  *           Date : 기능이 없다
  *                  데이터베이스와 호환
  *                  calendar : 설정 : set() , 값읽기 : get()
- *          List : add()
+ *           List : add()
  *                 remove()
  *                 set()
  *                 isEmpty()
  *                 size()
  *                 clear()
- *         Set :    add()
+ *                 
+ *           Set : add()
  *                 remove()
  *                 set()
  *                 isEmpty()
  *                 size()
- *                 clear()                               
- *       Map : put()
- *             remove()
- *             get()
+ *                 clear() 
+ *                                               
+ *           Map : put()
+ *                 remove()
+ *                 get()
  *             
- *      기타 : 
- *          Random : nextInt()           
- *          DecimalFormat : format()
- *          SimpleDateFormat : format() 
+ *          기타 : 
+ *               Random : nextInt()           
+ *               DecimalFormat : format()
+ *               SimpleDateFormat : format() 
  *----------------------------------------------------------------------
  *  람다 : stream ()
  *        map()
@@ -91,12 +94,12 @@ package com.sist.io;
  *               Reader : FileReader
  *               Writer : fileWriter
  *    
- *     보조 스트림 : BufferInputStream
+ *      보조 스트림 : BufferInputStream
  *                BufferOutputStream
  *                BufferReader
  *                BufferWriter
  *               
- *    객체 스트림 : ObjectInputStream
+ *     객체 스트림 : ObjectInputStream
  *               ObjectOutputStream
  *               
  * => 파일 쓰기, 파일 읽기, 다운로드, 업로드
@@ -121,33 +124,33 @@ package com.sist.io;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 // io는 CheckedException 반드시 예외처리 필수
 public class IO_1 {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-          // File
-		try
-		{
-			File file=new File("C:\\javaDev\\javaStudy\\Chapter18_입출력(IO)_2\\src\\com\\sist\\io\\IO_1.java");
-			System.out.println("파일명: "+file.getName()); // *****파일명 가져오기 
-			System.out.println("경로+파일명: "+file.getPath()); // *****경로와 파일명
-			System.out.println("경로명: "+file.getParent());
-			SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
-			System.out.println("수정일: "+sdf.format(new Date(file.lastModified())));
-			System.out.println("숨긴 파일"+file.isHidden());
-			System.out.println("파일여부"+file.isFile()); // ********** 중요한 부분
-			
+		// File
+		try {
+			File file = new File("C:\\javaDev\\javaStudy\\Chapter18_입출력(IO)_2\\src\\com\\sist\\io\\IO_1.java");
+			System.out.println("파일명: " + file.getName()); // *****파일명 가져오기
+			System.out.println("경로+파일명: " + file.getPath()); // *****경로와 파일명
+			System.out.println("경로명: " + file.getParent());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			System.out.println("수정일: " + sdf.format(new Date(file.lastModified())));
+			System.out.println("숨긴 파일" + file.isHidden());
+			System.out.println("파일여부" + file.isFile()); // ********** 중요한 부분
+
 			// is(isXXXXXX)가 앞에 있으면 리턴형은 무조건 boolean
 			// set " -> void
 			// get " -> 리턴형
-			
-			System.out.println("읽기 전용"+file.canRead());
-			System.out.println("쓰기 전용"+file.canWrite());
-			
+
+			System.out.println("읽기 전용" + file.canRead());
+			System.out.println("쓰기 전용" + file.canWrite());
+
+		} catch (Exception ex) {
 		}
-		catch(Exception ex) {}
-		
+
 	}
 
 }
