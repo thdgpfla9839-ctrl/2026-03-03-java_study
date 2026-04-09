@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import com.sist.vo.FoodVO;
-
+ 
 // 실제로 값을 채우는 경우는 게터/세터 모두 필요
 // 이미 데이터가 고정이 된 상태는 게터만 필요 -> 코드 변경 불가능해짐
 public class FoodDAO {
