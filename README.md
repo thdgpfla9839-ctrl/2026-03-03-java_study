@@ -8,7 +8,7 @@
 - [x] Chapter06~08 : 객체지향, 인터페이스
 - [x] Chapter11 : 예외처리
 - [x] Chapter12~15 : 라이브러리, 제네릭, 컬렉션
-- [ ] Chapter16~17 : 람다, 스트림
+- [x] Chapter16~17 : 람다, 스트림
 - [ ] Chapter18~19 : 입출력, 네트워크
 
 > 아래 각 항목을 클릭하면 상세 내용이 펼쳐집니다.
@@ -744,5 +744,120 @@ for (String s : list) {
 ```
 
 > `List<String>`처럼 `<>` 안에 담을 데이터형을 지정(제네릭)해서 사용한다. 이렇게 하면 `list.add()`, `list.get()` 등을 쓸 때 형변환 없이 바로 원하는 타입으로 다룰 수 있다.
+
+</details>
+
+<details>
+<summary><b>Chapter16~17. 람다(Lambda) · 스트림(Stream)</b></summary>
+
+### 1. 람다식(Lambda)
+
+함수 인터페이스(메소드가 1개뿐인 인터페이스)를 **익명으로, 코드 없이 간단하게 표현**하는 문법. 소스가 짧아지는 대신 가독성은 다소 떨어질 수 있다.
+
+```java
+// 기존 방식 (익명 클래스)
+new Thread(new Runnable() {
+    public void run() {
+        System.out.println("쓰레드 처리");
+    }
+}).start();
+
+// 람다
+new Thread(() -> System.out.println("쓰레드 처리")).start();
+```
+
+**기본 문법**: `(매개변수) -> {실행문}`
+
+```java
+(a, b) -> a + b     // 리턴형은 자동 추론됨 (자바스크립트의 화살표 함수와 유사한 개념)
+```
+
+| 구분 | 기존 방식(메소드) | 람다 |
+|---|---|---|
+| 재사용 | 메소드로 만들어두고 반복 호출 | 그 자리에서 즉석으로 한 번 사용 |
+| 길이 | 구현이 길다 | 짧다 |
+
+> 람다는 반복문, 리스트 처리, 조건 필터링처럼 **단순한 조건을 짧게 처리**할 때 유리하고, 조건이 복잡해지면 오히려 기존 방식(if문, 메소드)이 더 명확하다.
+
+```java
+List<Integer> list = new ArrayList<Integer>(List.of(1,2,3,4,5,6,7,8,9,10));
+
+// 기존 for문
+for (int i : list) {
+    if (i % 2 == 0)
+        System.out.println(i);
+}
+
+// 람다 + 스트림
+list.stream()
+    .filter(x -> x > 10)
+    .forEach(System.out::println);
+```
+
+### 2. 스트림(Stream)
+
+컬렉션(List 등)의 데이터를 **파이프라인처럼 순서대로 흘려보내면서** 가공·처리하는 방식. `filter`(조건 걸러내기) → `map`(값 변형) → `forEach`(최종 처리) 순서로 이어붙여 쓴다.
+
+```java
+List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+
+list.stream()
+    .filter(n -> n % 2 == 0)   // 짝수만 통과
+    .map(n -> n * n)            // 제곱으로 변형
+    .forEach(System.out::println);
+
+// 위 코드와 동일한 기존 for문
+for (int i : list) {           // stream
+    if (i % 2 == 0) {          // filter
+        i = i * i;              // map
+        System.out.println(i);  // forEach
+    }
+}
+```
+
+**스트림 주요 메소드**
+
+| 메소드 | 역할 |
+|---|---|
+| `filter(조건)` | 조건에 맞는 데이터만 통과시킴 |
+| `map(변환)` | 데이터를 다른 값/형태로 변형 |
+| `forEach(처리)` | 최종적으로 하나씩 꺼내서 처리(주로 출력) |
+| `collect(Collectors.toList())` | 처리된 결과를 다시 List로 모음 |
+
+```java
+// 메소드 레퍼런스(::) - 람다를 더 짧게 줄이는 문법
+names.stream()
+     .map(name -> name.toUpperCase())   // 람다
+     .forEach(name -> System.out.println(name));
+
+names.stream()
+     .map(String::toUpperCase)          // 메소드 레퍼런스로 축약
+     .forEach(System.out::println);
+```
+
+**활용 — 조건 검색 + 결과 리스트로 모으기**
+
+```java
+// 성인 회원만 걸러서 새 리스트로 만들기
+List<User> adults = users.stream()
+        .filter(u -> u.getAge() >= 18)
+        .collect(Collectors.toList());
+
+// 회원 이름만 추출
+List<String> names = users.stream()
+        .map(User::getName)
+        .collect(Collectors.toList());
+```
+
+**활용 — 그룹별 합계 (실무에서 통계 낼 때 자주 사용)**
+
+```java
+Map<String, Integer> totalByUser =
+    orders.stream()
+          .collect(Collectors.groupingBy(
+                Order::getUserName,
+                Collectors.summingInt(Order::getPrice)));
+// 사용자 이름별로 그룹을 묶고, 각 그룹의 price를 합산
+```
 
 </details>
