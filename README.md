@@ -9,7 +9,7 @@
 - [x] Chapter11 : 예외처리
 - [x] Chapter12~15 : 라이브러리, 제네릭, 컬렉션
 - [x] Chapter16~17 : 람다, 스트림
-- [ ] Chapter18~19 : 입출력, 네트워크
+- [x] Chapter18~19 : 입출력, 네트워크
 
 > 아래 각 항목을 클릭하면 상세 내용이 펼쳐집니다.
 
@@ -859,5 +859,118 @@ Map<String, Integer> totalByUser =
                 Collectors.summingInt(Order::getPrice)));
 // 사용자 이름별로 그룹을 묶고, 각 그룹의 price를 합산
 ```
+
+</details>
+
+<details>
+<summary><b>Chapter18~19. 입출력(IO) · 네트워크(쓰레드 · 내부클래스)</b></summary>
+
+### 1. IO(입출력)란
+
+데이터의 흐름을 관리하는 통로. 데이터가 이동할 공간이 필요하기 때문에 `Stream`(통로)을 사용하며, 기본적으로 단방향이라 입력과 출력을 동시에 하려면 쓰레드를 함께 사용한다.
+
+**사용처**: 파일 읽기/쓰기, 파일 이동, JSON/XML 등 텍스트 변경, 설정 파일, 네트워크 통신(서버-클라이언트), 사용자 입력(콘솔)
+
+**IO 주요 클래스**
+
+| 구분 | 클래스 | 특징 |
+|---|---|---|
+| 읽기 | `InputStream` → `FileInputStream` | 1바이트씩 전송, 업로드·다운로드에 사용 |
+| 읽기(버퍼) | `BufferedInputStream` | 여러 데이터를 한 번에 모아 보내서 효율적 |
+| 쓰기 | `OutputStream` → `FileOutputStream` | 1바이트씩 전송, 파일 쓰기 |
+| 쓰기(버퍼) | `BufferedOutputStream` | - |
+| 읽기(문자) | `Reader` → `FileReader` | 2바이트씩 전송, 파일 제어(읽기) |
+| 읽기(문자,버퍼) | `BufferedReader` | - |
+| 쓰기(문자) | `Writer` → `FileWriter` | 2바이트씩 전송, 파일 제어(쓰기) |
+| 쓰기(문자,버퍼) | `BufferedWriter` | - |
+
+> `Buffered` 계열은 데이터를 여러 개 모아서 한 번에 전송하기 때문에, 하나씩 전송하는 기본 Stream/Reader보다 효율적이다.
+
+```java
+try {
+    FileInputStream fis = new FileInputStream("c:\\javaDev\\고객.txt");
+    BufferedInputStream bis = new BufferedInputStream(fis);
+
+    FileOutputStream fos = new FileOutputStream("c:\\java_data\\고객.txt");
+    BufferedOutputStream bos = new BufferedOutputStream(fos);
+
+    int i = 0;
+    byte[] buffer = new byte[1024];
+    while ((i = bis.read(buffer, 0, 1024)) != -1) {
+        bos.write(buffer, 0, i);
+    }
+
+    fis.close(); bis.close(); fos.close(); bos.close();
+} catch (Exception ex) {
+    System.out.println(ex.getMessage());
+}
+```
+
+> 파일 입출력은 `CheckedException`을 가지고 있어서 **반드시 예외처리**가 필요하고, 다 쓰고 나면 `close()`로 스트림을 닫아줘야 한다.
+
+**Files 클래스 (java.nio)** — 대부분 `static` 메소드로 되어 있어 `Files.` 을 찍고 바로 사용
+
+| 메소드 | 기능 |
+|---|---|
+| `exists(경로명)` | 파일 존재 여부 확인 |
+| `createFile(경로명)` | 새 파일 생성 |
+| `createDirectory(경로명)` | 폴더 생성 |
+| `delete(경로명)` | 파일 삭제 |
+| `readAllLines(경로명)` | 모든 줄을 `List<String>`으로 읽어옴 |
+| `write(경로명, content)` | 파일 쓰기 |
+| `copy(source, target)` | 파일 복사 (원본 유지) |
+| `move(source, target)` | 파일 이동 (원본 사라짐) |
+| `size(경로명)` | 파일 크기 |
+
+> 경로명은 `Paths`로 먼저 `Path` 객체를 만들어서 사용해야 한다. 복사·이동 시 파일이 이미 있으면 `StandardCopyOption.REPLACE_EXISTING` 옵션으로 덮어쓰기 처리한다.
+
+### 2. 쓰레드(Thread)
+
+| 구분 | 의미 |
+|---|---|
+| 프로세스 | 한 개의 프로그램 |
+| 쓰레드 | 한 개의 프로세스 안에서 여러 기능을 동시에 수행 (동시성, 시분할) |
+
+쓰레드는 게임이나 서버(여러 명이 동시에 접속하는 환경)에 많이 사용된다.
+
+**구현 방법**
+
+```java
+// 1) Thread 클래스 상속
+class A extends Thread { }
+
+// 2) Runnable 인터페이스 구현 - 표준화된 방식
+class A implements Runnable { }
+```
+
+**쓰레드 생명주기**: `new`(생성) → `Runnable`(구현 준비, 자원을 공유하며 대기) → `Running`(`run()` 실행) → `Blocked`(일시정지) → `Dead`(메모리 해제)
+
+> 쓰레드는 한 가지 일만 수행하도록 설계하는 게 기본 원칙이다. (예: 게임에서 총알 하나, 비행기 하나씩 각자의 쓰레드로 처리)
+
+### 3. 내부클래스(Inner Class)
+
+**멤버클래스**: 공통으로 사용되는 변수나 메소드가 있을 때, 클래스 안에 클래스를 두는 방식. 주로 네트워크 서버, 쓰레드를 만들 때 사용한다.
+
+```java
+class Server {
+    // 사용자 정보를 공유해야 하므로 이너클래스로 관리
+    class 통신 { }
+}
+```
+
+**익명클래스**: 상속을 이미 다른 클래스로 받아 쓰고 있어서 추가로 상속을 못 받는 경우, 상속 없이 그 자리에서 오버라이딩만 해서 사용하는 방식.
+
+```java
+class A {
+    B b = new B() {
+        void disp() { }   // 상속(extends) 없이 즉석에서 재정의
+    };
+}
+class B {
+    void disp() { }
+}
+```
+
+> 윈도우 프로그램에서 버튼 클릭 이벤트를 처리할 때 자주 쓰인다 — 이미 `JFrame`을 상속받은 상태라 버튼 클래스를 또 상속받을 수 없으니, 익명클래스로 그 자리에서 동작만 재정의하는 식이다.
 
 </details>
