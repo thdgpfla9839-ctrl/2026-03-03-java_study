@@ -642,3 +642,107 @@ try {
 > `throws`는 메소드 안에서 try~catch 위치를 정하기 애매하거나 소스가 길 때, 또는 라이브러리를 만들 때 주로 사용한다. 일반적인 경우엔 try~catch로 직접 처리하는 경우가 더 많다.
 
 </details>
+
+<details>
+<summary><b>Chapter12~15. 라이브러리(java.lang) · 제네릭 · 컬렉션</b></summary>
+
+### 1. 라이브러리 (java.lang)
+
+**Wrapper 클래스**: 기본형(int, double 등)을 클래스처럼 다루기 위해 감싸는 클래스. 제네릭(`<>`)에는 기본형을 직접 못 쓰기 때문에 Wrapper가 필요하다.
+
+| 기본형 | Wrapper 클래스 |
+|---|---|
+| `int` | `Integer` |
+| `long` | `Long` |
+| `double` | `Double` |
+| `char` | `Character` |
+| `boolean` | `Boolean` |
+
+```java
+Integer i = new Integer(10);
+int ii = i;   // 오토박싱/언박싱 - 기본형과 Wrapper는 서로 자동 호환됨
+```
+
+> 웹이나 네트워크로 넘어오는 값은 무조건 문자열(String)이기 때문에, 정수로 계산하려면 `Integer.parseInt("10")`처럼 변환(파싱)해야 한다.
+
+**문자열 처리 클래스**
+
+| 클래스 | 특징 |
+|---|---|
+| `StringBuilder` | 문자를 모아서 관리, 동기화 방식(안정성 우선) |
+| `StringBuffer` | 문자를 모아서 관리, 비동기화 방식(속도 우선) |
+| `StringTokenizer` | 간단한 구분자로 문자열을 빠르게 분리(`split()`보다 단순한 경우에 유리) |
+
+```java
+String info = "32,000원 | 2026년 3월 19일 발행 | 448쪽";
+
+// split() - 정규식 사용
+String[] data = info.split("\\|");
+
+// StringTokenizer - 간단한 구분자 분리
+StringTokenizer st = new StringTokenizer(info, "|");
+while (st.hasMoreTokens()) {
+    System.out.println(st.nextToken());
+}
+```
+
+### 2. 제네릭(Generic)
+
+클래스나 메소드를 정의할 때 사용할 데이터형을 `<>` 안에 미리 지정해서, **타입을 통일하고 형변환 없이 안전하게 쓰기 위한 문법**.
+
+```java
+class Box<T> {         // T: Type(클래스형)의 약자, 관례적으로 쓰는 이름
+    T t;
+    public void setT(T t) { this.t = t; }
+    public T getT() { return t; }
+}
+
+Box box = new Box();          // 데이터형 지정 없음 → 내부적으로 Object로 처리
+Box<String> box1 = new Box<String>();   // String 전용 Box로 확정
+```
+
+**규칙**
+- `<>` 안에는 **클래스만** 사용 가능 (`<int>`, `<double>` 같은 기본형은 불가 → `<Integer>`, `<Double>`처럼 Wrapper 사용)
+- 사용자가 만든 클래스도 제네릭으로 사용 가능
+
+**제네릭을 쓰는 이유**
+- 데이터형이 통일되어 가독성이 좋아짐
+- 꺼내 쓸 때 형변환이 필요 없어짐 (컴파일 시점에 타입이 확정되어 있으므로)
+- 잘못된 타입이 들어오는 걸 컴파일 단계에서 미리 막을 수 있음
+
+### 3. 컬렉션(Collection)
+
+배열은 크기가 고정되어 있고 정렬·검색 기능도 직접 구현해야 하는 단점이 있다. 컬렉션은 이런 배열의 단점을 보완해서, **크기가 자동으로 늘어나고 정렬·검색 기능까지 표준화되어 제공되는 데이터 저장 구조**다.
+
+**컬렉션의 세 종류**
+
+| 구분 | 순서 | 중복 | 대표 클래스 | 활용 예 |
+|---|---|---|---|---|
+| `List` | O (인덱스 있음) | O | `ArrayList`, `LinkedList`, `Vector` | 게시판 목록, 장바구니 |
+| `Set` | X | X | `HashSet`, `TreeSet` | 로또 번호, 중복 없는 태그 |
+| `Map` | key-value 쌍 | key는 중복 불가 | `HashMap`, `Hashtable` | 전화번호부, 설정값 |
+
+**List 구현 클래스 비교**
+
+| 클래스 | 구조 | 특징 |
+|---|---|---|
+| `ArrayList` | 배열 기반 | 조회(접근) 속도가 빠름, 추가/삭제는 느림 → **웹 검색/조회 위주**에 많이 사용 |
+| `LinkedList` | 노드 기반 | 추가/삭제가 빠름, 조회는 느림 → **파일 관리, 댓글/게시판**처럼 삽입이 잦은 곳에 사용 |
+| `Vector` | ArrayList와 유사 | 동기화 처리되어 있어 속도는 느리지만 신뢰성이 높음 → **네트워크 접속자 관리** |
+
+> **배열 기반 vs 노드 기반**: ArrayList는 데이터를 메모리에 한 줄로 쭉 붙여 저장해서, 인덱스로 원하는 칸에 바로 접근할 수 있다(조회가 빠름). 대신 중간에 추가/삭제하면 뒤 데이터를 전부 밀거나 당겨야 해서 느리다. LinkedList는 데이터를 각각 노드로 만들고, 노드끼리 다음 노드의 주소만 연결해서 관리한다. 중간에 추가/삭제할 땐 앞뒤 노드 연결만 바꾸면 되지만, 특정 위치를 찾으려면 처음부터 노드를 하나씩 따라가야 해서 조회는 느리다.
+
+```java
+List<String> list = new ArrayList<String>();
+list.add("1");
+list.add("2");
+list.add("3");
+
+for (String s : list) {
+    System.out.println(s);
+}
+```
+
+> `List<String>`처럼 `<>` 안에 담을 데이터형을 지정(제네릭)해서 사용한다. 이렇게 하면 `list.add()`, `list.get()` 등을 쓸 때 형변환 없이 바로 원하는 타입으로 다룰 수 있다.
+
+</details>
